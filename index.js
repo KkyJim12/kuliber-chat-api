@@ -32,6 +32,10 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("server-update-read", (data) => {
+    socket.to(data.user2.id + "&" + data.user1.id).emit("client-update-read");
+  });
+
   socket.on("disconnect", () => {
     console.log("disconnect"); // the Set contains at least the socket ID
   });
