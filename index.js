@@ -15,7 +15,7 @@ const cors = require("cors");
 
 app.use(cors());
 
-app.get("/test", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Server is running.");
 });
 
@@ -42,6 +42,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5000, () => {
-  console.log("listening on *:5000");
+server.listen(8080, () => {
+  console.log("Server is running on port 8080.");
 });

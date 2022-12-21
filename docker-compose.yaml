@@ -1,0 +1,9 @@
+version: "3"
+services:
+  node-api-socket:
+    build: ./docker/nodejs/.
+    volumes:
+      - .:/usr/src/app/
+    ports:
+      - "80:8080"
+    container_name: node-api-socket
