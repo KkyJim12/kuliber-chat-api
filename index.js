@@ -24,6 +24,10 @@ io.on("connection", (socket) => {
     socket.join(data.user1.id + "&" + data.user2.id);
   });
 
+  socket.on("join-notification-room", (data) => {
+    socket.join(data.user.id + "unreaded-messages");
+  });
+
   socket.on("send-message", (data) => {
     socket.to(data.user2.id + "&" + data.user1.id).emit("get-message", {
       sender: data.user1,
@@ -31,6 +35,14 @@ io.on("connection", (socket) => {
       content: data.content,
       type: data.type,
     });
+
+    socket
+      .to(data.user2.id + "unreaded-messages")
+      .emit("get-unreaded-message", {
+        sender: data.user1,
+        content: data.content,
+        type: data.type,
+      });
   });
 
   socket.on("server-update-read", (data) => {
