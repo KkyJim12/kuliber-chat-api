@@ -45,6 +45,25 @@ io.on("connection", (socket) => {
       });
   });
 
+  socket.on("join-group-room", (data) => {
+    console.log(data.company1.id + "&group" + data.company2.id);
+    socket.join(data.company1.id + "&group" + data.company2.id);
+  });
+
+  socket.on("send-message-group", (data) => {
+    console.log(data);
+    console.log(data.company1.id + "&group" + data.company2.id);
+    socket
+      .to(data.company1.id + "&group" + data.company2.id)
+      .emit("get-message-group", {
+        senderUser: data.sender,
+        senderCompany: data.company1,
+        recieverCompany: data.company2,
+        content: data.content,
+        type: data.type,
+      });
+  });
+
   socket.on("server-update-read", (data) => {
     socket.to(data.user2.id + "&" + data.user1.id).emit("client-update-read");
   });
