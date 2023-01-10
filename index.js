@@ -25,7 +25,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("join-notification-room", (data) => {
+    console.log(data);
     socket.join(data.user.id + "unreaded-messages");
+    socket.join(data.company + "group-notification");
   });
 
   socket.on("send-message", (data) => {
@@ -46,13 +48,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("join-group-room", (data) => {
-    console.log(data.company1.id + "&group" + data.company2.id);
     socket.join(data.company1.id + "&group" + data.company2.id);
   });
 
   socket.on("send-message-group", (data) => {
     console.log(data);
-    console.log(data.company1.id + "&group" + data.company2.id);
     socket
       .to(data.company1.id + "&group" + data.company2.id)
       .emit("get-message-group", {
@@ -61,6 +61,29 @@ io.on("connection", (socket) => {
         recieverCompany: data.company2,
         content: data.content,
         type: data.type,
+        invoice: data.invoice,
+      });
+
+    socket
+      .to(data.company1.id + "group-notification")
+      .emit("get-message-group", {
+        senderUser: data.sender,
+        senderCompany: data.company1,
+        recieverCompany: data.company2,
+        content: data.content,
+        type: data.type,
+        invoice: data.invoice,
+      });
+
+    socket
+      .to(data.company2.id + "group-notification")
+      .emit("get-message-group", {
+        senderUser: data.sender,
+        senderCompany: data.company1,
+        recieverCompany: data.company2,
+        content: data.content,
+        type: data.type,
+        invoice: data.invoice,
       });
   });
 
