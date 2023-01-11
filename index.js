@@ -25,7 +25,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("join-notification-room", (data) => {
-    console.log(data);
     socket.join(data.user.id + "unreaded-messages");
     socket.join(data.company + "group-notification");
   });
@@ -52,7 +51,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-message-group", (data) => {
-    console.log(data);
     socket
       .to(data.company1.id + "&group" + data.company2.id)
       .emit("get-message-group", {
